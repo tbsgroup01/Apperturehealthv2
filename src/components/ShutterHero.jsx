@@ -78,7 +78,7 @@ const ShutterHero = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full min-h-screen bg-[#0b0b0f] text-white overflow-hidden"
+      className="relative w-full min-h-screen  text-white overflow-hidden"
     >
       {/* LOADING OVERLAY COLUMNS */}
       <div className="fixed inset-0 flex z-[100] pointer-events-none">
