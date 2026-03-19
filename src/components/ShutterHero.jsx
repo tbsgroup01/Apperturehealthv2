@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 // Replace with your actual logo path
 import logo from "../assets/logo.svg";
 
-// REGISTER ONLY SCROLLTRIGGER
 gsap.registerPlugin(ScrollTrigger);
 
 const ShutterHero = () => {
@@ -16,7 +15,28 @@ const ShutterHero = () => {
 
   useGSAP(
     () => {
-      // 1. Setup Timeline
+      // --- 1. PAGE LOAD TRANSITION ---
+      const entranceTL = gsap.timeline();
+      
+      entranceTL
+        .to(".transition-col", {
+          yPercent: -100,
+          duration: 1,
+          stagger: 0.1,
+          ease: "expo.inOut",
+        })
+        .from(
+          ".hero-content",
+          {
+            y: 40,
+            opacity: 0,
+            duration: 1.2,
+            ease: "expo.out",
+          },
+          "-=0.5" // Overlap with columns sliding out
+        );
+
+      // --- 2. SCROLL TRIGGER TIMELINE ---
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -27,42 +47,30 @@ const ShutterHero = () => {
         },
       });
 
-      // 2. Animate Shutter Blades
       tl.to(".shutter-blade", {
         rotation: -45,
-        transformOrigin: "0% 0%", // Pivots from the center of the SVG
+        transformOrigin: "0% 0%",
         ease: "power2.inOut",
         stagger: 0,
       })
-      // 3. Reveal Logo
-      .to(
-        ".logo-reveal",
-        {
-          opacity: 1,
-          scale: 1,
-          filter: "blur(0px)",
-          duration: 0.5,
-        },
-        "-=0.4" // Start slightly before shutter finishes
-      )
-      // 4. Animate Side Line
-      .to(
-        lineRef.current,
-        {
-          scaleY: 1,
-          ease: "none",
-        },
-        0 // Start at the very beginning of the timeline
-      );
-
-      // Initial Entrance Animation (Non-scroll)
-      gsap.from(".hero-content", {
-        y: 40,
-        opacity: 0,
-        duration: 1.2,
-        ease: "expo.out",
-        delay: 0.5,
-      });
+        .to(
+          ".logo-reveal",
+          {
+            opacity: 1,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 0.5,
+          },
+          "-=0.4"
+        )
+        .to(
+          lineRef.current,
+          {
+            scaleY: 1,
+            ease: "none",
+          },
+          0
+        );
     },
     { scope: containerRef }
   );
@@ -70,8 +78,18 @@ const ShutterHero = () => {
   return (
     <div
       ref={containerRef}
-      className=" relative w-full min-h-screen bg-[#0b0b0f] text-white overflow-hidden"
+      className="relative w-full min-h-screen bg-[#0b0b0f] text-white overflow-hidden"
     >
+      {/* LOADING OVERLAY COLUMNS */}
+      <div className="fixed inset-0 flex z-[100] pointer-events-none">
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className="transition-col flex-1 bg-[#0b0b0f] border-r border-[#46B0D5]/10"
+          />
+        ))}
+      </div>
+
       <section className="relative w-full h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-around px-6 md:px-10 gap-16">
         
         {/* THE SHUTTER UNIT */}
@@ -119,7 +137,7 @@ const ShutterHero = () => {
           <p className="text-gray-400 mt-6 max-w-md text-sm sm:text-lg leading-relaxed opacity-70 group-hover:text-gray-200 transition-colors duration-500">
             APPERTURE is FOCUSED on amplifying VALUE in healthcare.
           </p>
-          <Link to="/contact" className="glass-btn mt-10 px-8 py-3 border border-[#46B0D5]/40 hover:bg-[#46B0D5] hover:text-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] font-bold">
+          <Link to="/contact" className="mt-10 px-8 py-3 border border-[#46B0D5]/40 hover:bg-[#46B0D5] hover:text-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] font-bold">
             Get In Touch
           </Link>
         </div>
