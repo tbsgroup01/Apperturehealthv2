@@ -137,7 +137,7 @@ const ShutterHero = () => {
           <p className="text-gray-400 mt-6 max-w-md text-sm sm:text-lg leading-relaxed opacity-70 group-hover:text-gray-200 transition-colors duration-500">
             APPERTURE is FOCUSED on amplifying VALUE in healthcare.
           </p>
-          <Link to="/contact" className="mt-10 px-8 py-3 border border-[#46B0D5]/40 hover:bg-[#46B0D5] hover:text-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] font-bold">
+          <Link to="/contact" className="glass-btn mt-10 px-8 py-3 border border-[#46B0D5]/40 hover:bg-[#46B0D5] hover:text-black transition-all duration-500 uppercase tracking-[0.2em] text-[10px] font-bold">
             Get In Touch
           </Link>
         </div>
